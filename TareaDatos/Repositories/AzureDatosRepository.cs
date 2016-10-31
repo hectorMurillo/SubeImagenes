@@ -18,27 +18,49 @@ namespace TareaDatos.Repositories
         }   
         public void BorrarBache(int id)
         {
-            throw new NotImplementedException();
+            var table = Referencia("Baches");
+
+            var query = TableOperation.Retrieve<BacheEntity>("Baches", id.ToString());
+
+            var producto = table.Execute(query);
+
+            if (producto.Result != null)
+            {
+                var p = (BacheEntity)producto.Result;
+
+                TableOperation updateOperation = TableOperation.Delete(p);
+
+                // Execute the operation.
+                table.Execute(updateOperation);
+            }
         }
 
         public void CrearBache(Bache nuevo)
         {
             var Datos = Referencia("Baches");
-            int sigId;
+            int sigId = 0;
             Datos.CreateIfNotExists();
 
             var todos = this.LeerBaches();
-            nuevo.Id = (todos.Count + 1);
+            nuevo.Id = todos.Count();                       
             if (nuevo.Id != 0)
-            {                
-                sigId = todos.Count();
+            {
+                //sigId = todos.Count();
+                sigId = (todos.Last().Id) + 1;
+                nuevo.Id = sigId;
             }
             else { sigId = 0; }
 
-            BacheEntity entity = new BacheEntity((sigId + 1).ToString());
+            BacheEntity entity = new BacheEntity((sigId).ToString());
             entity.Id = nuevo.Id;
             entity.Imagen = nuevo.Imagen;
-            
+            entity.Pregunta1 = nuevo.Pregunta1;
+            entity.Respuesta1 = nuevo.Respuesta1;
+            entity.Pregunta2 = nuevo.Pregunta2;
+            entity.Respuesta2 = nuevo.Respuesta2;
+            entity.Latitud = nuevo.Latitud;
+            entity.Longitud = nuevo.Longitud;
+            entity.Fecha = nuevo.Fecha;
             
 
             TableOperation insertOperation = TableOperation.Insert(entity);
@@ -52,7 +74,7 @@ namespace TareaDatos.Repositories
             table.CreateIfNotExists();
             // Construct the query operation for all customer entities where PartitionKey="Smith".
             TableQuery<BacheEntity> query = new TableQuery<BacheEntity>()
-                .Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, "Datos"));
+                .Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, "Baches"));
 
             var datos = table.ExecuteQuery(query);
 
@@ -62,7 +84,10 @@ namespace TareaDatos.Repositories
                 {
                     Id = e.Id,
                     Imagen = e.Imagen,
-                    Descripcion=e.Descripcion,
+                    Pregunta1 = e.Pregunta1,
+                    Respuesta1 = e.Respuesta1,
+                    Pregunta2 = e.Pregunta2,
+                    Respuesta2 = e.Respuesta2,
                     Latitud=e.Latitud,
                     Longitud=e.Longitud
                 }).ToList();
@@ -76,7 +101,7 @@ namespace TareaDatos.Repositories
         {
             var table = Referencia("Baches");
             // Construct the query operation for all customer entities where PartitionKey="Smith".
-            var query = TableOperation.Retrieve<BacheEntity >("Productos", id.ToString());
+            var query = TableOperation.Retrieve<BacheEntity >("Baches", id.ToString());
 
             var dato = table.Execute(query);
 
@@ -87,9 +112,13 @@ namespace TareaDatos.Repositories
                 {
                     Id = e.Id,
                     Imagen = e.Imagen,
-                    Descripcion = e.Descripcion,
+                    Pregunta1 = e.Pregunta1,
+                    Respuesta1 = e.Respuesta1,
+                    Pregunta2 = e.Pregunta2,
+                    Respuesta2 = e.Respuesta2,
                     Latitud = e.Latitud,
-                    Longitud = e.Longitud
+                    Longitud = e.Longitud,
+                    Fecha = e.Fecha
                 };
             }
             else
@@ -112,16 +141,37 @@ namespace TareaDatos.Repositories
                 // Create the Replace TableOperation.
                 TableOperation updateOperation = TableOperation.Replace(p);                
                 p.Imagen = editar.Imagen;
+                p.Pregunta1 = editar.Pregunta1;
+                p.Respuesta1 = editar.Respuesta1;            
+                p.Pregunta2 = editar.Pregunta2;
+                p.Respuesta2 = editar.Respuesta2;
                 p.Latitud = editar.Latitud;
                 p.Longitud = editar.Longitud;
+                p.Fecha = editar.Fecha;
 
                 // Execute the operation.
                 tabla.Execute(updateOperation);
             }
         }
+
+        //PERIODICO
         public void BorrarPeriodico(int id)
         {
-            throw new NotImplementedException();
+            var table = Referencia("Periodicos");
+
+            var query = TableOperation.Retrieve<PeriodicoEntity>("Periodicos", id.ToString());
+
+            var producto = table.Execute(query);
+
+            if (producto.Result != null)
+            {
+                var p = (PeriodicoEntity)producto.Result;
+
+                TableOperation updateOperation = TableOperation.Delete(p);
+
+                // Execute the operation.
+                table.Execute(updateOperation);
+            }
         }
 
         public void CrearPeriodico(Periodico nuevo)
@@ -142,7 +192,11 @@ namespace TareaDatos.Repositories
             entity.Id = nuevo.Id;
             entity.Imagen = nuevo.Imagen;
             entity.Descripcion = nuevo.Descripcion;
-
+            entity.Pregunta1 = nuevo.Pregunta1;
+            entity.Respuesta1 = nuevo.Respuesta1;
+            entity.Pregunta2 = nuevo.Pregunta2;
+            entity.Respuesta2 = nuevo.Respuesta2;
+            entity.Fecha = nuevo.Fecha;    
 
             TableOperation insertOperation = TableOperation.Insert(entity);
 
@@ -165,7 +219,12 @@ namespace TareaDatos.Repositories
                 {
                     Id = e.Id,
                     Imagen = e.Imagen,
-                    Descripcion = e.Descripcion,                  
+                    Descripcion = e.Descripcion,
+                    Pregunta1 = e.Pregunta1,
+                    Respuesta1 = e.Respuesta1,
+                    Pregunta2 = e.Pregunta2,
+                    Respuesta2 = e.Respuesta2,
+                    Fecha = e.Fecha,
                 }).ToList();
             }
             else
@@ -190,6 +249,11 @@ namespace TareaDatos.Repositories
                 TableOperation updateOperation = TableOperation.Replace(p);                
                 p.Imagen = editar.Imagen;
                 p.Descripcion = editar.Descripcion;
+                p.Pregunta1 = editar.Pregunta1;
+                p.Respuesta1 = editar.Respuesta1;
+                p.Pregunta2 = editar.Pregunta2;
+                p.Respuesta2 = editar.Respuesta2;
+                p.Fecha = editar.Fecha;
                 // Execute the operation.
                 tabla.Execute(updateOperation);
             }
@@ -209,7 +273,11 @@ namespace TareaDatos.Repositories
                 {
                     Id = e.Id,
                     Imagen = e.Imagen,
-                    Descripcion = e.Descripcion,                    
+                    Descripcion = e.Descripcion,
+                    Pregunta1 = e.Pregunta1,
+                    Respuesta1 = e.Respuesta1,
+                    Pregunta2 = e.Pregunta2,
+                    Respuesta2 = e.Respuesta2,                 
                 };
             }
             else
@@ -238,11 +306,15 @@ namespace TareaDatos.Repositories
         {
 
         }
-        public int Id { get; set; }        
+        public int Id { get; set; }
         public string Imagen { get; set; }
-        public string Descripcion { get; set; }
+        public string Pregunta1 { get; set; }
+        public string Respuesta1 { get; set; }
+        public string Pregunta2 { get; set; }
+        public string Respuesta2 { get; set; }
         public string Latitud { get; set; }
         public string Longitud { get; set; }
+        public string Fecha { get; set; }
     }
     public class PeriodicoEntity : TableEntity
     {
@@ -260,5 +332,10 @@ namespace TareaDatos.Repositories
         public int Id { get; set; }        
         public string Imagen { get; set; }
         public string Descripcion { get; set; }
+        public string Pregunta1 { get; set; }
+        public string Respuesta1 { get; set; }
+        public string Pregunta2 { get; set; }
+        public string Respuesta2 { get; set; }
+        public string Fecha { get; set; }
     }
 }

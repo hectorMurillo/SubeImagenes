@@ -36,5 +36,17 @@ namespace TareaDatos.Repositories
         {
             throw new NotImplementedException();
         }
+        public Stream obtenerImagen(string contenedor, string nombre, Stream archivo)
+        {
+            Stream memoria = new MemoryStream();
+            CloudStorageAccount storageAccount = CloudStorageAccount.Parse(connectionString);
+            CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();
+            CloudBlobContainer container = blobClient.GetContainerReference(contenedor.ToLower().Trim());
+            CloudBlockBlob blockBlob = container.GetBlockBlobReference(nombre.ToLower().Trim());
+            if (blockBlob != null)
+                blockBlob.DownloadToStream(memoria);
+            memoria.Position = 0;
+            return memoria;
+        }
     }
 }

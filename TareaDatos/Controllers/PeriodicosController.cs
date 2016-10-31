@@ -5,6 +5,9 @@ using System.Web;
 using System.Web.Mvc;
 using TareaDatos.Repositories;
 using TareaDatos.Models;
+using MetadataExtractor;
+using MetadataExtractor.Formats.Exif;
+
 namespace TareaDatos.Controllers
 {
     public class PeriodicosController : Controller
@@ -44,7 +47,8 @@ namespace TareaDatos.Controllers
         // POST: Periodico/Create
         [HttpPost]
         public ActionResult Create(Periodico nuevo, HttpPostedFileBase imagen)
-        {
+        {            
+
             var Url = string.Empty;
             if (imagen == null || string.IsNullOrWhiteSpace(imagen.FileName))
             {
@@ -110,17 +114,22 @@ namespace TareaDatos.Controllers
         // GET: Periodico/Delete/5
         public ActionResult Delete(int id)
         {
-            return View();
+            var model = periodicos.LeerPeriodicoPorID(id);
+            if(model==null)
+            {
+                HttpNotFound();
+            }
+            return View(model);
         }
 
         // POST: Periodico/Delete/5
         [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
+        public ActionResult Delete(int id, Periodico periodicoABorrar)
         {
             try
             {
                 // TODO: Add delete logic here
-
+                periodicos.BorrarPeriodico(id);
                 return RedirectToAction("Index");
             }
             catch

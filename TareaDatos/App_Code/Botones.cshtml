@@ -1,0 +1,47 @@
+﻿   
+    @helper btnInput(string nombre)
+    {
+        nombre = nombre.ToLower();
+        if (nombre == "create" || nombre == "crear" || nombre == "crearNuevo")
+        {
+                <span class="btn btn-file btn-primary">
+                    <span class="glyphicon glyphicon-open h3"> </span>
+                    <span class="h3">&nbsp;&nbsp;Subir Imagen</span>
+                    <input type="file" name="imagen" value="Subir" class="form-control" />
+                </span>                
+        }
+        else if (nombre == "edit" || nombre == "editar")
+        {
+                <span class="btn btn-file btn-danger">
+                    <span class="glyphicon glyphicon-open h3"> </span>
+                    <span class="h3">&nbsp;&nbsp;Remplazar Imagen</span>
+                    <input type="file" name="imagen" class="form-control" id="imagen" />
+                </span>
+                <br />
+        }
+    }
+    @helper btnCrear() {
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <span class="btn btn-success btn-submit" >
+                <span class="glyphicon glyphicon-saved h4"> </span>
+                <span class="h4">&nbsp;&nbsp;Guardar</span> 
+                <input type="submit" name="submit" value=""/>               
+            </span>
+        </div>        
+    </div>    
+    }
+
+
+    @helper btnBorrar()
+    {
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <span class="btn btn-danger btn-submit">
+                <span class="glyphicon glyphicon-trash h4"> </span>
+                <span class="h4">&nbsp;&nbsp;Borrar</span>
+                <input type="submit" name="submit" value="" />
+            </span>
+        </div>
+    </div>
+    }   

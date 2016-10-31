@@ -11,9 +11,15 @@ namespace TareaDatos.Models
         public int Id { get; set; }
         [Required]
         public string Imagen { get; set; }
-        public string Descripcion { get; set; }        
+        public string Pregunta1 { get; set; }
+        [Required]
+        public string Respuesta1 { get; set; }
+        public string Pregunta2 { get; set; }
+        [Required]
+        public string Respuesta2 { get; set; }
         public string Latitud { get; set; }
         public string Longitud { get; set; }
+        public string  Fecha { get; set; }
     }
     public class Periodico
     {
@@ -21,6 +27,11 @@ namespace TareaDatos.Models
         [Required]
         public string Imagen { get; set; }
         public string Descripcion { get; set; }
+        public string Pregunta1 { get; set; }
+        public string Respuesta1 { get; set; }
+        public string Pregunta2 { get; set; }
+        public string Respuesta2 { get; set; }
+        public string  Fecha { get; set; }
 
     }
 }
